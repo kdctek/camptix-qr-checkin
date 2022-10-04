@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: CampTix QR Checkin
- * Plugin URI:  https://wordcamp.org
+ * Plugin URI:  https://github.com/kdctek/camptix-qr-checkin
  * Description: Create a Shortcode for embeding QR Code and also enabling users with Editor Role to Checkin Attendee by scaning the QR Code.
  * Version:     0.1.0
  * Text Domain: tix_qrcheckin
