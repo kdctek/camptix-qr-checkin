@@ -12,31 +12,18 @@
  * License:     GPLv2
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
 
-class CampTix_Addon_QR_Checkin extends CampTix_Addon {
-
-	/**
-	 * Init
-	 */
-	public function camptix_init() {
-		add_action( 'tix_qrcheckin_attendee',   array( $this, 'tix_qrcheckin_attendance' ), 10, 2 );
-		add_shortcode( 'tix_qrcheckin',         array( $this, 'tix_qrcheckin_shortcode' ) );
-	}
-
-	/**
-	 * Callback for the [camptix_attendees] shortcode.
-	 */
-	public function tix_qrcheckin_shortcode( $attr ) {
-		$attendee_id = $attr['attendee_id'];
-        $attendee = get_post( $attendee_id );
-
-		$attr = $this->sanitize_attendees_atts( $attr );
-
-		return $this->get_attendees_shortcode_content( $attr );
-	}
-
+// Load Plugin Text Domain.
+add_action( 'init', 'camptix_qrcheckin_load_textdomain' );
+function camptix_qrcheckin_load_textdomain() {
+	load_plugin_textdomain( 'camptix-kdcpay', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 }
 
-// Register this class as a CampTix Addon.
-camptix_register_addon( 'CampTix_Addon_QR_Checkin' );
- 
+// Load the KDCpay Payment Method
+add_action( 'camptix_load_addons', 'camptix_qrcheckin_load_addon' );
+function camptix_qrcheckin_load_payment_method() {
+	if ( ! class_exists( 'CampTix_Addon_QrCheckin' ) )
+		require_once plugin_dir_path( __FILE__ ) . 'inc/class-camptix-addon-qrcheckin.php';
+	camptix_register_addon( 'CampTix_Addon_QrCheckin' );
+}
