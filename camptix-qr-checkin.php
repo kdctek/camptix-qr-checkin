@@ -15,9 +15,12 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
 
 // Load Plugin Text Domain.
-add_action( 'init', 'camptix_qrcheckin_load_textdomain' );
-function camptix_qrcheckin_load_textdomain() {
+add_action( 'init', 'camptix_qrcheckin_load_init' );
+function camptix_qrcheckin_load_init() {
+	//Textdomain
 	load_plugin_textdomain( 'camptix-kdcpay', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+	//EP
+	add_rewrite_endpoint( 'checkin', EP_PAGES );
 }
 
 // Load the KDCpay Payment Method
