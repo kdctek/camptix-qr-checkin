@@ -18,14 +18,52 @@ class CampTix_Addon_QrCheckin extends CampTix_Addon {
 	 * Init
 	 */
 	public function camptix_init() {
+		
 		add_action( 'tix_qrcheckin_attendance', array( $this, 'camptix_qrcheckin_attendance' ), 10, 2 );
+		
 		add_shortcode( 'qr_checkin', array( $this, 'camptix_qrcheckin_shortcode' ) );
+
+		if ( ! empty( $_GET['camptix-qrcheckin'] ) ) {
+			add_filter( 'template_include', array( $this, 'camptix_qrcheckin_attended' ) );
+		}
+
+	}	
+
+	/**
+	 * Mark Attendence
+	 */
+	public function camptix_qrcheckin_attended() {
+
+		/**
+		 * Check if Volunteer
+		 * 
+		 * Verify if logged in & has valid Capabilities
+		 * to check-in the attendee.
+		 */
+		if ( ! current_user_can( 'edit_others_posts' ) ) 
+				return;
+
+		 /**
+		 * Check if valid Access Token
+		 * 
+		 * Camptix generates an Access Token which will be a value
+		 * in the QR Code.
+		 * 
+		 * If accesss token not valid, display ERROR
+		 */
+
+		 /**
+		 * Mark as attendeed
+		 * 
+		 * Using the meta_key
+		 */
+
 	}
 
 	/**
 	 * Callback for the [qr_checkin] shortcode.
 	 */
-	public function camptix_qrcheckin_shortcode( $attr ) {
+	public function camptix_qrcheckin_shortcode( $atts ) {
         
 		$attendee = get_post( $attendee_id );
 		$edit_token = get_post_meta( $this->tmp( 'attendee_id' ), 'tix_edit_token', true );
